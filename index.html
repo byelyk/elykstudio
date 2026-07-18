@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Elyk Studio — A creative agency." />
+  <title>ELYK STUDIO</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet" />
+</head>
+<body class="home">
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <nav class="nav nav--home">
+    <a href="index.html" class="nav__logo">Elyk Studio</a>
+    <ul class="nav__links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===================== VIDEO GRID =====================
+    Full-bleed 2-row grid. One video per cell.
+
+    HOW TO ADD YOUR VIDEOS:
+    ─────────────────────────────────────────────
+    Portrait clip → replace src="videos/clip-X.mp4"
+    YouTube       → replace YOUR_VIDEO_ID_X (2 places each)
+
+    Drop .mp4 files into the /videos folder in this project.
+    ───────────────────────────────────────────── -->
+  <main class="grid-stage">
+
+    <!-- Row 1 -->
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-1.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>01</span></div>
+    </div>
+
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-2.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>02</span></div>
+    </div>
+
+    <!-- YouTube landscape — row 1 -->
+    <div class="grid-cell grid-cell--landscape">
+      <div class="yt-embed" data-youtube-id="YOUR_VIDEO_ID_1">
+        <iframe
+          src="https://www.youtube.com/embed/YOUR_VIDEO_ID_1?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playlist=YOUR_VIDEO_ID_1"
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" title="Elyk Studio reel 1"></iframe>
+      </div>
+      <div class="grid-cell__placeholder grid-cell__placeholder--yt"><span>YouTube</span><small>Replace YOUR_VIDEO_ID_1</small></div>
+    </div>
+
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-4.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>04</span></div>
+    </div>
+
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-5.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>05</span></div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-6.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>06</span></div>
+    </div>
+
+    <!-- YouTube landscape — row 2 -->
+    <div class="grid-cell grid-cell--landscape">
+      <div class="yt-embed" data-youtube-id="YOUR_VIDEO_ID_2">
+        <iframe
+          src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&modestbranding=1&playlist=YOUR_VIDEO_ID_2"
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" title="Elyk Studio reel 2"></iframe>
+      </div>
+      <div class="grid-cell__placeholder grid-cell__placeholder--yt"><span>YouTube</span><small>Replace YOUR_VIDEO_ID_2</small></div>
+    </div>
+
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-8.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>08</span></div>
+    </div>
+
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-9.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>09</span></div>
+    </div>
+
+    <div class="grid-cell grid-cell--portrait">
+      <video class="grid-video" autoplay muted loop playsinline>
+        <source src="videos/clip-10.mp4" type="video/mp4" />
+      </video>
+      <div class="grid-cell__placeholder"><span>10</span></div>
+    </div>
+
+    <!-- Brand wordmark overlay -->
+    <div class="grid-wordmark" aria-hidden="true">
+      <span class="grid-wordmark__text">ELYK<br />STUDIO</span>
+    </div>
+
+  </main>
+
+  <!-- ===================== BOTTOM BAR ===================== -->
+  <footer class="bottom-bar">
+    <span class="bottom-bar__loc">⚲ NY</span>
+    <span class="bottom-bar__tagline">A Creative Agency</span>
+    <a href="https://instagram.com/elykstudio" class="bottom-bar__handle" target="_blank" rel="noopener">@ELYKSTUDIO</a>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

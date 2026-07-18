@@ -1,0 +1,1286 @@
+/* =============================================
+   ELYK STUDIO — Design System
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* --- Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Tokens --- */
+:root {
+  --bg:        #000000;   /* true black */
+  --bg-soft:   #101010;   /* near-black panels */
+  --orange:    #FF4D00;   /* bright orange accent */
+  --orange-dim:#8a2a00;   /* muted orange for dim states */
+  --cream:     var(--orange); /* legacy alias → orange (so old refs still work) */
+  --white:     #ffffff;
+  --grey:      #A2A2A2;
+  --dark-grey: #2a2a2a;
+  --accent:    var(--orange);
+
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-serif:   'Playfair Display', 'Georgia', serif;
+  --font-body:    'Inter', Arial, sans-serif;
+
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --dur: 0.4s;
+
+  --nav-h:    56px;
+  --bar-h:    42px;
+}
+
+/* --- Base --- */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  line-height: 1;
+  overflow-x: hidden;
+  cursor: none;
+  height: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =============================================
+   CUSTOM CURSOR
+   ============================================= */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  background: var(--orange);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.18s var(--ease), height 0.18s var(--ease), opacity 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor.expanded { width: 44px; height: 44px; }
+
+/* =============================================
+   NAVIGATION
+   ============================================= */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.75rem;
+}
+
+/* Home nav sits on top of grid — subtle shadow keeps text legible over video */
+.nav--home {
+  background: transparent;
+}
+.nav--home .nav__logo,
+.nav--home .nav__links a {
+  text-shadow: 0 1px 12px rgba(0,0,0,0.6);
+}
+
+/* Inner-page nav gets subtle dark bg */
+.nav--page {
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.nav__logo {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  opacity: 0.9;
+  transition: opacity var(--dur) var(--ease);
+}
+.nav__logo:hover { opacity: 1; }
+
+.nav__links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav__links a {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  opacity: 0.45;
+  transition: opacity var(--dur) var(--ease);
+}
+.nav__links a:hover { opacity: 1; }
+.nav__links a.active { opacity: 1; color: var(--orange); }
+
+/* =============================================
+   HOME — VIDEO GRID STAGE
+   ============================================= */
+body.home {
+  overflow: hidden; /* full-bleed, no scroll on desktop */
+}
+
+.grid-stage {
+  position: fixed;
+  inset: 0;
+  /*
+    6 columns:
+      portrait | portrait | landscape(2col) | portrait | portrait
+    We use repeat with named tracks so landscape cells can span 2.
+
+    Columns: 1fr 1fr 1fr 1fr 1fr 1fr  (6 equal)
+    Landscape cells span 2 of those.
+
+    2 rows that together fill the space between nav and bottom bar.
+  */
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 3px;
+  padding-top: var(--nav-h);
+  padding-bottom: var(--bar-h);
+  z-index: 0;
+}
+
+/* Portrait cell — 1 col wide */
+.grid-cell--portrait {
+  grid-column: span 1;
+}
+
+/* Landscape cell — 2 cols wide (for YouTube 16:9) */
+.grid-cell--landscape {
+  grid-column: span 2;
+}
+
+/* Each cell */
+.grid-cell {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+/* Video inside cell */
+.grid-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* YouTube iframe wrapper */
+.yt-embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Scale the iframe up so it fills and crops (same trick as object-fit:cover) */
+.yt-embed iframe {
+  position: absolute;
+  /* push left and top to center a wider/taller iframe */
+  top: 50%;
+  left: 50%;
+  width: 177.78%;   /* 16/9 * 100% */
+  height: 100%;
+  min-width: 100%;
+  min-height: 56.25%; /* 9/16 * 100% */
+  transform: translate(-50%, -50%);
+  border: none;
+  pointer-events: none; /* keep hover effects on parent */
+}
+
+/* Placeholder shown when no video src is loaded */
+.grid-cell__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  /* Only visible if video/iframe didn't load */
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0; /* hidden by default — shown via JS if video errors */
+}
+
+/* Show placeholder when cell has no-video class */
+.grid-cell.no-video .grid-cell__placeholder {
+  opacity: 1;
+}
+
+.grid-cell__placeholder span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+
+.grid-cell__placeholder--yt span {
+  color: rgba(255,77,0,0.3);
+}
+
+.grid-cell__placeholder small {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.1);
+  display: block;
+}
+
+/* Hover overlay on each cell */
+.grid-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.3s var(--ease);
+  z-index: 2;
+}
+.grid-cell:hover::after {
+  background: rgba(0,0,0,0.15);
+}
+
+/* =============================================
+   BRAND WORDMARK OVERLAY
+   ============================================= */
+.grid-wordmark {
+  position: fixed;
+  inset: var(--nav-h) 0 var(--bar-h) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.grid-wordmark__text {
+  font-family: var(--font-body);
+  font-size: clamp(3.5rem, 11vw, 10rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--orange); /* bright orange wordmark pop */
+  text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  user-select: none;
+}
+
+/* =============================================
+   BOTTOM BAR
+   ============================================= */
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--bar-h);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.75rem;
+  background: var(--bg);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.bottom-bar__loc,
+.bottom-bar__tagline,
+.bottom-bar__handle {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  opacity: 0.7;
+}
+
+.bottom-bar__tagline {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bottom-bar__handle {
+  transition: opacity var(--dur) var(--ease);
+}
+.bottom-bar__handle:hover { opacity: 1; }
+
+/* =============================================
+   FOLDER CAROUSEL (each grid cell)
+   ============================================= */
+
+/* Slide track — horizontal flex strip */
+.folder__track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Each slide fills the cell exactly */
+.folder__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* YouTube slide: iframe covers + crops */
+.folder__slide--yt iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 177.78%; height: 100%;
+  min-width: 100%; min-height: 56.25%;
+  transform: translate(-50%, -50%);
+  border: none;
+  pointer-events: none;
+}
+
+/* Video inside a slide */
+.folder__slide video {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder tile */
+.folder__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--bg-soft);
+}
+.folder__placeholder span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.15);
+}
+.folder__placeholder--yt span {
+  color: rgba(255,77,0,0.25);
+}
+.folder__placeholder small {
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.08);
+}
+
+/* UI overlay layer */
+.folder__ui {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Folder tab (top label) ── */
+.folder__tab {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  background: rgba(0,0,0,0);
+  transition: background 0.3s;
+  pointer-events: none;
+}
+
+/* label text injected by JS from data-label */
+.folder__tab::after {
+  content: attr(data-label);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0);
+  transition: color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grid-cell:hover .folder__tab {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%);
+}
+.grid-cell:hover .folder__tab::after {
+  color: rgba(255,255,255,0.7);
+}
+
+/* ── Dot indicators ── */
+.folder__dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.grid-cell:hover .folder__dots { opacity: 1; }
+
+.folder__dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transition: background 0.25s, transform 0.25s;
+  cursor: pointer;
+  pointer-events: all;
+}
+.folder__dot.active {
+  background: var(--orange);
+  transform: scale(1.3);
+}
+
+/* ── Arrow buttons ── */
+.folder__arrows {
+  position: absolute;
+  inset: 28px 0 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.grid-cell:hover .folder__arrows { opacity: 1; }
+
+.folder__arrow {
+  pointer-events: all;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--white);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+  backdrop-filter: blur(6px);
+}
+.folder__arrow:hover {
+  background: rgba(255,77,0,0.2);
+  transform: scale(1.1);
+}
+.folder__arrow:active { transform: scale(0.95); }
+.folder__arrow.hidden { opacity: 0; pointer-events: none; }
+
+/* Hover lift on the whole cell */
+.grid-cell {
+  transition: box-shadow 0.3s;
+}
+.grid-cell:hover {
+  box-shadow: 0 0 0 1.5px rgba(255,77,0,0.18) inset;
+  z-index: 5;
+}
+
+/* =============================================
+   INNER PAGES (contact, about, work)
+   ============================================= */
+body:not(.home) {
+  overflow-y: auto;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--nav-h);
+}
+
+/* =============================================
+   CONTACT PAGE
+   ============================================= */
+.contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 2.5rem 6rem;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.contact__heading {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 5rem;
+}
+.contact__heading em {
+  font-style: normal;
+  color: var(--orange);
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem 4rem;
+}
+
+.contact__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact__label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  opacity: 0.55;
+}
+
+.contact__value {
+  font-size: 0.875rem;
+  color: var(--white);
+  line-height: 1.6;
+}
+.contact__value a {
+  transition: color var(--dur) var(--ease);
+}
+.contact__value a:hover { color: var(--orange); }
+
+/* =============================================
+   FOOTER (inner pages)
+   ============================================= */
+.footer {
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: auto;
+}
+
+.footer__copy {
+  font-size: 0.625rem;
+  color: var(--grey);
+  opacity: 0.35;
+  letter-spacing: 0.08em;
+}
+
+.footer__social {
+  font-size: 0.625rem;
+  color: var(--grey);
+  opacity: 0.35;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: opacity var(--dur) var(--ease);
+}
+.footer__social:hover { opacity: 0.8; }
+
+/* =============================================
+   FADE-UP ANIMATION
+   ============================================= */
+.fade-up {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fade-up 0.85s var(--ease) forwards;
+}
+.fade-up:nth-child(1) { animation-delay: 0.08s; }
+.fade-up:nth-child(2) { animation-delay: 0.2s; }
+.fade-up:nth-child(3) { animation-delay: 0.34s; }
+.fade-up:nth-child(4) { animation-delay: 0.48s; }
+
+@keyframes fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+
+/* Tablet: tighten up, allow scroll on home */
+@media (max-width: 1024px) {
+  body.home {
+    overflow-y: auto;
+  }
+
+  .grid-stage {
+    position: relative;
+    height: calc(100svh - var(--nav-h) - var(--bar-h));
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: var(--nav-h);
+    margin-bottom: var(--bar-h);
+  }
+}
+
+/* Mobile: stack to 2 columns, portrait only */
+@media (max-width: 640px) {
+  :root {
+    --nav-h: 52px;
+    --bar-h: 40px;
+  }
+
+  .grid-stage {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: none; /* let it auto-flow */
+    height: auto;
+    min-height: calc(100svh - var(--nav-h) - var(--bar-h));
+    gap: 2px;
+  }
+
+  /* On mobile, landscape cells go full width */
+  .grid-cell--landscape {
+    grid-column: span 2;
+    aspect-ratio: 16/9;
+  }
+
+  .grid-cell--portrait {
+    aspect-ratio: 9/16;
+  }
+
+  /* Wordmark stays centered over the grid — scrim keeps it legible */
+  .grid-wordmark {
+    position: fixed;
+    inset: var(--nav-h) 0 var(--bar-h) 0;
+  }
+  .grid-wordmark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 40% at center, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0) 70%);
+    pointer-events: none;
+  }
+  .grid-wordmark__text {
+    position: relative;
+    font-size: clamp(2.75rem, 15vw, 4.5rem);
+    text-shadow: 0 2px 30px rgba(0,0,0,0.85);
+  }
+
+  /* Nav — fits 4 links + logo comfortably */
+  .nav {
+    padding: 0 1.1rem;
+  }
+  .nav__logo {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+  .nav__links {
+    gap: 1rem;
+  }
+  .nav__links a {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+
+  .bottom-bar {
+    padding: 0 1.1rem;
+  }
+  .bottom-bar__loc,
+  .bottom-bar__handle {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+  }
+  .bottom-bar__tagline {
+    display: none; /* hide middle label on mobile to avoid overlap */
+  }
+}
+
+/* =============================================
+   TOUCH DEVICES — restore native cursor,
+   hide the custom orange dot
+   ============================================= */
+@media (hover: none), (pointer: coarse) {
+  body { cursor: auto; }
+  a, button, .work-item, .grid-cell { cursor: pointer; }
+  .cursor { display: none !important; }
+}
+
+/* =============================================
+   WORK INDEX (clickable campaign list)
+   ============================================= */
+body.work-list {
+  overflow-x: hidden;
+  min-height: 100vh;
+  background: #000;
+}
+
+/* Background video layer — behind active title only */
+.work-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #000;
+}
+.work-bg video,
+.work-bg iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease);
+  pointer-events: none;
+}
+.work-bg video.active,
+.work-bg iframe.active { opacity: 1; }
+
+/* Scale YouTube bg to cover */
+.work-bg iframe {
+  top: 50%; left: 50%;
+  width: 177.78vh;
+  min-width: 100%;
+  min-height: 56.25vw;
+  transform: translate(-50%, -50%);
+  border: none;
+}
+
+.work-bg__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.78) 100%);
+}
+
+/* The list itself */
+.work-index {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: calc(var(--nav-h) + 4rem) 1.5rem calc(var(--bar-h) + 4rem);
+}
+
+.work-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: transform 0.4s var(--ease);
+}
+
+.work-item__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: #2a2a2a; /* dim by default */
+  transition: color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.work-item__client {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #2a2a2a;
+  margin-top: 0.4rem;
+  transition: color 0.4s var(--ease);
+}
+
+/* Active state */
+.work-item.active .work-item__title { color: var(--orange); }
+.work-item.active .work-item__client { color: var(--white); }
+
+/* Small index number */
+.work-item__index {
+  display: none;
+}
+
+/* =============================================
+   CAMPAIGN DETAIL (case study)
+   ============================================= */
+body.campaign {
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.cs {
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+}
+
+/* Hero */
+.cs__hero {
+  position: relative;
+  height: 68vh;
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #000;
+}
+.cs__hero video,
+.cs__hero iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+}
+.cs__hero iframe {
+  top: 50%; left: 50%;
+  width: 177.78vh;
+  min-width: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cs__hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.35) 100%);
+}
+.cs__hero-inner {
+  position: relative;
+  z-index: 3;
+  padding: 0 2.5rem 3rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.cs__client {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 1rem;
+}
+.cs__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  line-height: 0.98;
+  color: var(--white);
+}
+
+/* Body layout */
+.cs__body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 4rem;
+}
+
+.cs__overview p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+}
+
+.cs__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.cs__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 1rem;
+}
+.cs__meta-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  opacity: 0.6;
+}
+.cs__meta-value {
+  font-size: 0.95rem;
+  color: var(--white);
+}
+
+/* Results / analytics */
+.cs__section-label {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 1.5rem;
+}
+
+.cs__results {
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+  padding: 0 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.cs__result {
+  background: var(--bg);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.cs__result-value {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  color: var(--orange);
+  line-height: 1;
+}
+.cs__result-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* Clip galleries */
+.cs__clips {
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+  padding: 0 2.5rem;
+}
+
+/* YouTube — landscape row */
+.cs__yt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.cs__yt {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--bg-soft);
+  overflow: hidden;
+  border-radius: 4px;
+}
+.cs__yt iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.cs__yt .cs__ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(255,77,0,0.3);
+}
+
+/* TikTok — portrait row */
+.cs__tt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.cs__tt {
+  position: relative;
+  aspect-ratio: 9/16;
+  background: var(--bg-soft);
+  overflow: hidden;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs__tt blockquote { margin: 0; width: 100%; }
+.cs__tt .cs__ph {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(255,255,255,0.2);
+  text-align: center; padding: 1rem;
+}
+
+.cs__clips-head {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--grey);
+  margin-bottom: 1.25rem; opacity: 0.7;
+}
+
+/* =============================================
+   RESPONSIVE — work index + campaign
+   ============================================= */
+@media (max-width: 768px) {
+  /* Work index — bigger tap targets, tighter rhythm */
+  .work-index {
+    gap: 0.9rem;
+    padding: calc(var(--nav-h) + 2.5rem) 1.25rem calc(var(--bar-h) + 2.5rem);
+    justify-content: flex-start;
+  }
+  .work-item {
+    padding: 0.4rem 1rem;
+  }
+  .work-item__title { font-size: 2.6rem; line-height: 1; }
+  .work-item__client { font-size: 0.62rem; margin-top: 0.5rem; }
+  /* On touch, the active title (and its video) follows scroll — see main.js */
+
+  /* Campaign detail */
+  .cs__hero {
+    height: 48vh;
+    min-height: 320px;
+  }
+  .cs__body {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem 1.5rem;
+  }
+  .cs__hero-inner { padding: 0 1.5rem 2rem; }
+  .cs__overview p { font-size: 1rem; }
+  .cs__results {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 1.5rem;
+  }
+  .cs__section-label,
+  .cs__clips { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .cs__result { padding: 1.5rem 1rem; }
+  .cs__yt-grid { grid-template-columns: 1fr; }
+  .cs__tt-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .nav__links { gap: 0.8rem; }
+  .nav__links a { font-size: 0.56rem; letter-spacing: 0.06em; }
+  .work-item__title { font-size: 2.1rem; }
+  .cs__results { grid-template-columns: 1fr 1fr; }
+}
+
+/* =============================================
+   ABOUT PAGE
+   ============================================= */
+body.about {
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.about-page {
+  padding-top: var(--nav-h);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Intro / manifesto */
+.ab-intro {
+  padding: 7rem 2.5rem 4rem;
+}
+.ab-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--orange);
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+.ab-lead {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 6vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.ab-lead em {
+  font-style: italic;
+  color: var(--orange);
+}
+
+/* Virgil quote */
+.ab-quote {
+  padding: 4rem 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin: 2rem 0;
+}
+.ab-quote__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  line-height: 1.4;
+  color: rgba(255,255,255,0.92);
+  max-width: 900px;
+  margin: 0 0 1.5rem;
+}
+.ab-quote__cite {
+  display: block;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* Philosophy */
+.ab-philosophy {
+  padding: 4rem 2.5rem;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.ab-body {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.82);
+}
+.ab-body strong {
+  font-weight: 600;
+  color: var(--white);
+}
+
+/* Services */
+.ab-services {
+  padding: 4rem 2.5rem 5rem;
+}
+.ab-section-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 3rem;
+}
+.ab-services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+.ab-service {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.14);
+  padding-top: 1.5rem;
+}
+.ab-service__num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--orange);
+  opacity: 0.8;
+}
+.ab-service__title {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--white);
+}
+.ab-service__desc {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.7);
+}
+
+/* CTA */
+.ab-cta {
+  padding: 5rem 2.5rem 7rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.ab-cta__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  color: var(--white);
+}
+.ab-cta__link {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--orange);
+  transition: opacity var(--dur) var(--ease);
+}
+.ab-cta__link:hover { opacity: 0.7; }
+
+/* About responsive */
+@media (max-width: 768px) {
+  .ab-intro { padding: 5rem 1.5rem 3rem; }
+  .ab-quote { padding: 3rem 1.5rem; }
+  .ab-philosophy { padding: 3rem 1.5rem; gap: 1.5rem; }
+  .ab-services { padding: 3rem 1.5rem 4rem; }
+  .ab-services__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .ab-cta { padding: 4rem 1.5rem 5rem; }
+}
