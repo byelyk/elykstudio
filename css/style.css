@@ -663,6 +663,7 @@ body:not(.home) {
   .grid-stage {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: none; /* let it auto-flow */
+    grid-auto-flow: row dense; /* backfill the slot left empty when a full-width landscape wraps */
     height: auto;
     min-height: calc(100svh - var(--nav-h) - var(--bar-h));
     gap: 2px;
@@ -792,7 +793,7 @@ body.work-list {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: calc(var(--nav-h) + 4rem) 1.5rem calc(var(--bar-h) + 4rem);
+  padding: calc(var(--nav-h) + 4rem) 1.5rem calc(var(--bar-h) + 7rem);
 }
 
 .work-item {
@@ -834,6 +835,65 @@ body.work-list {
 /* Small index number */
 .work-item__index {
   display: none;
+}
+
+/* =============================================
+   CLIENT MARQUEE — infinite logo/brand ticker
+   Fixed strip that sits just above the bottom bar.
+   ============================================= */
+.client-marquee {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--bar-h);
+  z-index: 150;
+  overflow: hidden;
+  padding: 0.85rem 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 100%);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  pointer-events: none; /* never blocks the titles behind it */
+  /* fade both edges so items slide in/out softly */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+
+.client-marquee__track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 3.5rem;
+  will-change: transform;
+  animation: client-marquee-scroll 30s linear infinite;
+}
+
+/* Move exactly one half-width; the track holds two identical
+   halves, so the loop is seamless. Duration set inline by JS. */
+@keyframes client-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.client-marquee__item {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(255,255,255,0.5);
+}
+
+.client-marquee__item img {
+  display: block;
+  height: 22px;
+  width: auto;
+  opacity: 0.6;
+}
+
+/* Respect users who prefer no motion */
+@media (prefers-reduced-motion: reduce) {
+  .client-marquee__track { animation: none; }
 }
 
 /* =============================================

@@ -38,7 +38,7 @@ const CAMPAIGNS = [
       { label: 'Saves',      value: '210K'  },
     ],
     youtube: ['YOUR_VIDEO_ID', 'YOUR_VIDEO_ID'],
-    tiktoks: ['https://www.tiktok.com/@user/video/0000000000000000000'],
+    tiktoks: ['https://res.cloudinary.com/dmh01vpoz/video/upload/v1784438065/ElianaOfori_moft6a.mp4'],
   },
   {
     id: 'mothers-day',
@@ -126,3 +126,28 @@ const CAMPAIGNS = [
 function getCampaign(id) {
   return CAMPAIGNS.find(c => c.id === id) || null;
 }
+
+
+/* =============================================
+   CLIENT MARQUEE — brands that scroll across the
+   bottom of the Work page (work.html).
+
+   Add every brand you've worked with here. Each entry is
+   one object. Two ways to show a brand:
+
+     { name: 'Sephora' }
+        → shows the brand NAME as text
+
+     { name: 'Sephora', logo: 'assets/sephora.svg' }
+        → shows a LOGO image instead (drop the file in an
+          assets/ folder; .svg or transparent .png works best)
+
+   The row scrolls forever and loops seamlessly — it repeats
+   the list automatically to fill the width, so even a short
+   list works. Order here = left-to-right in the loop.
+   ============================================= */
+const CLIENTS = [
+  { name: 'Sephora' },
+  { name: 'Quinn' },
+  // Add more brands below — e.g. { name: 'Your Brand' } or { name: 'Your Brand', logo: 'assets/your-brand.svg' }
+];

@@ -242,6 +242,8 @@ window.setYT = function(cellSelector, youtubeId, slideIndex = 0) {
     if (bgMedia[0]) bgMedia[0].classList.add('active');
   }
 
+  initClientMarquee();
+
   // On touch devices: activate item nearest viewport center on scroll
   if (window.matchMedia('(hover: none)').matches) {
     const items = Array.from(indexEl.querySelectorAll('.work-item'));
@@ -260,6 +262,61 @@ window.setYT = function(cellSelector, youtubeId, slideIndex = 0) {
     onScroll();
   }
 })();
+
+
+/* =============================================
+   CLIENT MARQUEE — infinite brand/logo ticker
+   (Work page). Reads CLIENTS from campaigns.js;
+   falls back to unique clients from CAMPAIGNS.
+   ============================================= */
+function initClientMarquee() {
+  const marquee = document.getElementById('clientMarquee');
+  const track = marquee && marquee.querySelector('.client-marquee__track');
+  if (!track) return;
+
+  // Source list: explicit CLIENTS, else derive from campaigns
+  let list = (typeof CLIENTS !== 'undefined' && CLIENTS.length) ? CLIENTS : [];
+  if (!list.length && typeof CAMPAIGNS !== 'undefined') {
+    list = [...new Set(CAMPAIGNS.map(c => c.client).filter(Boolean))].map(name => ({ name }));
+  }
+  if (!list.length) { marquee.style.display = 'none'; return; }
+
+  // Build one item element from a {name, logo} entry
+  const makeItem = entry => {
+    const el = document.createElement('span');
+    el.className = 'client-marquee__item';
+    if (entry.logo) {
+      const img = document.createElement('img');
+      img.src = entry.logo;
+      img.alt = entry.name || '';
+      // If the logo file is missing, fall back to the text name
+      img.addEventListener('error', () => { el.textContent = entry.name || ''; });
+      el.appendChild(img);
+    } else {
+      el.textContent = entry.name || '';
+    }
+    return el;
+  };
+
+  // Repeat the base list enough times to be at least as wide as the
+  // viewport, so one "half" of the loop always fills the screen.
+  const measure = document.createDocumentFragment();
+  list.forEach(e => measure.appendChild(makeItem(e)));
+  track.appendChild(measure);
+  const oneSetWidth = track.scrollWidth + parseFloat(getComputedStyle(track).columnGap || 0);
+  const reps = Math.max(2, Math.ceil(window.innerWidth / Math.max(oneSetWidth, 1)) + 1);
+
+  // Build a single half = list repeated `reps` times, then duplicate the
+  // half so translateX(-50%) lands on an identical frame (seamless loop).
+  track.innerHTML = '';
+  const half = [];
+  for (let r = 0; r < reps; r++) list.forEach(e => half.push(e));
+  [...half, ...half].forEach(e => track.appendChild(makeItem(e)));
+
+  // Constant speed (~55px/sec) regardless of how many brands there are
+  const halfWidth = track.scrollWidth / 2;
+  track.style.animationDuration = Math.max(12, Math.round(halfWidth / 55)) + 's';
+}
 
 
 /* =============================================
