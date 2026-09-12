@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Elyk Studio — Page not found" />
+  <title>ELYK STUDIO — Page Not Found</title>
+  <!-- root-relative so the styles resolve from any URL depth -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    .nf { min-height: 100vh; display: flex; flex-direction: column;
+          align-items: center; justify-content: center; text-align: center;
+          padding: calc(var(--nav-h) + 2rem) 1.5rem calc(var(--bar-h) + 4rem); }
+    .nf__code { font-family: var(--font-serif); font-style: italic; font-weight: 500;
+                font-size: clamp(5rem, 16vw, 11rem); line-height: 0.9;
+                color: var(--orange); letter-spacing: -0.02em; }
+    .nf__title { font-family: var(--font-serif); font-style: italic; font-weight: 500;
+                 font-size: clamp(1.6rem, 4vw, 2.6rem); color: var(--white);
+                 margin-top: 0.75rem; }
+    .nf__text { font-family: var(--font-body); font-size: 1rem; line-height: 1.6;
+                color: rgba(255,255,255,0.55); margin-top: 1.1rem; max-width: 34ch; }
+    .nf__links { display: flex; flex-wrap: wrap; gap: 0.7rem;
+                 justify-content: center; margin-top: 2rem; }
+    .nf__link { font-family: var(--font-body); font-size: 0.8rem; font-weight: 600;
+                letter-spacing: 0.16em; text-transform: uppercase;
+                padding: 0.85rem 1.5rem; border-radius: 100px; text-decoration: none;
+                color: rgba(255,255,255,0.75);
+                border: 1px solid rgba(255,255,255,0.18);
+                transition: color .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease); }
+    .nf__link:hover { color: #000; background: var(--orange); border-color: var(--orange); }
+    .nf__link--primary { color: #000; background: var(--orange); border-color: var(--orange); }
+    .nf__link--primary:hover { filter: brightness(1.1); }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <nav class="nav nav--page">
+    <a href="/index.html" class="nav__logo">Elyk Studio</a>
+    <ul class="nav__links">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/work.html">Work</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="nf">
+    <div class="nf__code">404</div>
+    <h1 class="nf__title">Page not found.</h1>
+    <p class="nf__text">This one didn’t make the final cut. Let’s get you back to the work.</p>
+    <div class="nf__links">
+      <a class="nf__link nf__link--primary" href="/index.html">Home</a>
+      <a class="nf__link" href="/work.html">See the Work</a>
+      <a class="nf__link" href="/contact.html">Contact</a>
+    </div>
+  </main>
+
+  <footer class="bottom-bar">
+    <span class="bottom-bar__loc">⚲ HOU · NY · DAL</span>
+    <span class="bottom-bar__tagline">Page Not Found</span>
+    <a href="https://instagram.com/elykstudio" class="bottom-bar__handle" target="_blank" rel="noopener">@ELYKSTUDIO</a>
+  </footer>
+
+  <script src="/js/main.js?v=9"></script>
+</body>
+</html>
