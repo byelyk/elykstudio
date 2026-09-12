@@ -368,6 +368,17 @@ function initClientMarquee() {
     return `<div class="cs__tt"><blockquote class="tiktok-embed" cite="${url}" data-video-id=""><a href="${url}">View on TikTok</a></blockquote></div>`;
   }).join('');
 
+  /* Only render a clips block when that platform actually has entries —
+     an empty "Watch — YouTube" heading over blank space reads as broken. */
+  const clipsHTML = (ytHTML || ttHTML)
+    ? `<div class="cs__clips">
+      ${ytHTML ? `<div class="cs__clips-head">Watch — YouTube</div>
+      <div class="cs__yt-grid">${ytHTML}</div>` : ''}
+      ${ttHTML ? `<div class="cs__clips-head">Watch — TikTok</div>
+      <div class="cs__tt-grid">${ttHTML}</div>` : ''}
+    </div>`
+    : '';
+
   root.innerHTML = `
     <div class="cs__hero">
       ${heroMedia}
@@ -401,12 +412,7 @@ function initClientMarquee() {
     <div class="cs__section-label">Results</div>
     <div class="cs__results">${resultsHTML}</div>
 
-    <div class="cs__clips">
-      <div class="cs__clips-head">Watch — YouTube</div>
-      <div class="cs__yt-grid">${ytHTML}</div>
-      <div class="cs__clips-head">Watch — TikTok</div>
-      <div class="cs__tt-grid">${ttHTML}</div>
-    </div>
+    ${clipsHTML}
   `;
 
   // Load TikTok embed script if any real TikToks present
