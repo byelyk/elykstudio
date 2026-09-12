@@ -1137,16 +1137,6 @@ body.campaign {
   .work-item__client { font-size: 0.62rem; margin-top: 0.5rem; }
   /* On touch, the active title (and its video) follows scroll — see main.js */
 
-  /* The bg video is always visible here (no hover to gate it), so the chrome
-     needs to carry its own contrast: a heavier wash plus a bottom vignette
-     that the marquee and bottom bar can sit on. */
-  .work-bg__overlay {
-    background:
-      linear-gradient(0deg, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.72) 22%, rgba(0,0,0,0) 46%),
-      linear-gradient(180deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 26%, rgba(0,0,0,0) 44%),
-      radial-gradient(ellipse at center, rgba(0,0,0,0.76) 0%, rgba(0,0,0,0.9) 100%);
-  }
-
   /* #2a2a2a reads as "dim" on black, but disappears against a bright frame —
      inactive titles need to stay legible over whatever is playing. */
   .work-item__title  { color: rgba(255,255,255,0.42); }
