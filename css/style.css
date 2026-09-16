@@ -628,6 +628,8 @@ body:not(.home) {
 .fade-up:nth-child(2) { animation-delay: 0.2s; }
 .fade-up:nth-child(3) { animation-delay: 0.34s; }
 .fade-up:nth-child(4) { animation-delay: 0.48s; }
+.fade-up:nth-child(5) { animation-delay: 0.60s; }
+.fade-up:nth-child(6) { animation-delay: 0.72s; }
 
 @keyframes fade-up {
   to { opacity: 1; transform: translateY(0); }
@@ -1363,4 +1365,91 @@ body.about {
     gap: 2.5rem;
   }
   .ab-cta { padding: 4rem 1.5rem 5rem; }
+}
+
+
+/* =============================================
+   BRANDS PAGE
+   ============================================= */
+.br-intro { padding: 7rem 2.5rem 3.5rem; }
+
+.br-lead {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+.br-lead em { font-style: italic; color: var(--orange); }
+
+.br-sub {
+  margin-top: 1.5rem;
+  max-width: 52ch;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.65;
+  color: rgba(255,255,255,0.5);
+}
+
+.br-groups { padding: 0 2.5rem 5rem; }
+
+.br-group { padding: 2.75rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
+
+.br-group__head { display: flex; align-items: baseline; gap: 0.9rem; }
+
+.br-group__label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.br-group__count {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3);
+}
+.br-group__blurb {
+  margin-top: 0.5rem;
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.42);
+}
+
+.br-list {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem 2rem;
+}
+
+.br-item { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.br-item__name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  line-height: 1.15;
+  color: var(--white);
+}
+.br-item__note {
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+}
+
+@media (max-width: 768px) {
+  .br-intro  { padding: 3.5rem 1.5rem 2rem; }
+  .br-groups { padding: 0 1.5rem 3.5rem; }
+  .br-group { padding: 2rem 0; }
+  .br-list { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.25rem 1.5rem; }
+  .br-item__name { font-size: 1.25rem; }
 }

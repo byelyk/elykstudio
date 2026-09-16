@@ -429,3 +429,31 @@ function initClientMarquee() {
     el.addEventListener('mouseleave', collapseCursor);
   });
 })();
+
+
+/* =============================================
+   BRANDS PAGE — renders BRAND_GROUPS into
+   brands.html. No-op on every other page.
+   ============================================= */
+(function initBrandsPage() {
+  const root = document.getElementById('brandGroups');
+  if (!root || typeof BRAND_GROUPS === 'undefined') return;
+
+  root.innerHTML = BRAND_GROUPS.map(g => `
+    <div class="br-group fade-up">
+      <div class="br-group__head">
+        <h2 class="br-group__label">${g.label}</h2>
+        <span class="br-group__count">${g.brands.length}</span>
+      </div>
+      ${g.blurb ? `<p class="br-group__blurb">${g.blurb}</p>` : ''}
+      <ul class="br-list">
+        ${g.brands.map(b => `
+          <li class="br-item">
+            <span class="br-item__name">${b.name}</span>
+            ${b.note ? `<span class="br-item__note">${b.note}</span>` : ''}
+          </li>`).join('')}
+      </ul>
+    </div>`).join('');
+
+  // .fade-up is a pure CSS animation (see style.css) — nothing to re-init
+})();

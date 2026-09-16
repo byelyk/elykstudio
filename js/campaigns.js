@@ -90,28 +90,83 @@ function getCampaign(id) {
   return CAMPAIGNS.find(c => c.id === id) || null;
 }
 
-
 /* =============================================
-   CLIENT MARQUEE — brands that scroll across the
-   bottom of the Work page (work.html).
+   BRANDS — powers brands.html (grouped) AND the
+   client marquee on work.html.
 
-   Add every brand you've worked with here. Each entry is
-   one object. Two ways to show a brand:
-
-     { name: 'Timberland' }
-        → shows the brand NAME as text
-
-     { name: 'Timberland', logo: 'assets/timberland.svg' }
-        → shows a LOGO image instead (drop the file in an
-          assets/ folder; .svg or transparent .png works best)
-
-   The row scrolls forever and loops seamlessly — it repeats
-   the list automatically to fill the width, so even a short
-   list works. Order here = left-to-right in the loop.
+   Each brand is { name } or { name, note } — the note
+   is a small line under the name (format, product, etc.).
+   Order of groups here = order down the page.
    ============================================= */
-const CLIENTS = [
-  { name: 'Timberland' },
-  { name: 'Gauth' },
-  { name: 'Microsoft' },
-  // Add more brands below — e.g. { name: 'Your Brand' } or { name: 'Your Brand', logo: 'assets/your-brand.svg' }
+const BRAND_GROUPS = [
+  {
+    label: 'Sponsorships',
+    blurb: 'Paid partnerships — integrations, series and campaigns.',
+    brands: [
+      { name: 'Microsoft' },
+      { name: 'Timberland' },
+      { name: 'Gauth' },
+      { name: 'Best Buy' },
+      { name: 'Venmo' },
+      { name: 'Sleepyhead' },
+      { name: 'ScholarshipOwl' },
+    ],
+  },
+  {
+    label: 'Ambassador',
+    blurb: 'Ongoing programs — long-term brand representation.',
+    brands: [
+      { name: 'Adobe' },
+      { name: 'Olipop' },
+      { name: 'Insta360' },
+      { name: 'Scent Society' },
+    ],
+  },
+  {
+    label: 'UGC',
+    blurb: 'Creator content produced for brands to own and run.',
+    brands: [
+      { name: 'Bloom Investments' },
+      { name: 'Quizard' },
+      { name: 'Traoh', note: '2 campaigns' },
+      { name: 'You Learn' },
+    ],
+  },
+  {
+    label: 'PR & Product',
+    blurb: 'Product partnerships, seeding and featured placements.',
+    brands: [
+      { name: 'Michael Kors' },
+      { name: 'La Roche-Posay' },
+      { name: 'Razer' },
+      { name: 'Belkin' },
+      { name: 'Aelfric Eden' },
+      { name: 'Tone' },
+      { name: 'PGYTECH' },
+      { name: 'Ausom', note: 'L2 Max e-scooter' },
+      { name: 'HAUOMS', note: 'Furniture · 2 items' },
+      { name: 'SnapFig', note: 'Custom figurine' },
+    ],
+  },
+  {
+    label: 'Events',
+    blurb: 'Invited as media and talent.',
+    brands: [
+      { name: 'The 50 Million', note: 'x When We All Vote' },
+      { name: 'Microsoft', note: 'Campus Tour' },
+      { name: 'RazerStore', note: 'Student Gear Up Day' },
+    ],
+  },
+  {
+    label: 'Features',
+    blurb: 'Appearances beyond the feed.',
+    brands: [
+      { name: 'Camp College', note: 'TV series' },
+    ],
+  },
 ];
+
+// Flat, de-duplicated brand list for the Work page marquee
+const CLIENTS = [...new Map(
+  BRAND_GROUPS.flatMap(g => g.brands).map(b => [b.name, { name: b.name }])
+).values()];
