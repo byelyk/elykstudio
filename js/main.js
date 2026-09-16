@@ -36,7 +36,11 @@ document.querySelectorAll('.grid-cell').forEach(cell => {
   const video = cell.querySelector('.grid-video');
   if (video) {
     video.addEventListener('error', () => cell.classList.add('no-video'));
-    const src = video.querySelector('source')?.getAttribute('src') || '';
+    // lazy-loaded tiles carry the URL in data-src until they scroll into view
+    const src = video.dataset.src
+             || video.getAttribute('src')
+             || video.querySelector('source')?.getAttribute('src')
+             || '';
     if (!src || src.includes('YOUR_')) {
       cell.classList.add('no-video');
       video.style.display = 'none';
@@ -456,4 +460,53 @@ function initClientMarquee() {
     </div>`).join('');
 
   // .fade-up is a pure CSS animation (see style.css) — nothing to re-init
+})();
+
+
+/* =============================================
+   HOME GRID — progressive video loading.
+
+   The grid is 10 autoplaying videos. Loading them all at once was ~110MB
+   and left the page blank for many seconds. Now each <video> paints a
+   Cloudinary poster frame immediately (~55KB each) and the real file is
+   attached only when the tile is on screen — staggered, so they don't all
+   fight for bandwidth at once.
+   ============================================= */
+(function initGridVideos() {
+  const vids = document.querySelectorAll('.grid-video[data-src]');
+  if (!vids.length) return;
+
+  let queue = 0;
+  const load = (v) => {
+    if (v.dataset.loaded) return;
+    v.dataset.loaded = '1';
+    // stagger: two at a time, ~450ms apart, so the first tiles play soonest
+    const delay = Math.floor(queue++ / 2) * 450;
+    setTimeout(() => {
+      v.src = v.dataset.src;
+      v.load();
+      v.play().catch(() => { /* autoplay blocked — poster stays, which is fine */ });
+    }, delay);
+  };
+
+  if (!('IntersectionObserver' in window)) { vids.forEach(load); return; }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { load(e.target); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '200px' });   // start just before a tile scrolls in
+
+  vids.forEach((v) => io.observe(v));
+
+  // Pause tiles that scroll out of view so offscreen video isn't burning CPU
+  const vis = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const v = e.target;
+      if (!v.dataset.loaded) return;
+      if (e.isIntersecting) v.play().catch(() => {});
+      else v.pause();
+    });
+  }, { threshold: 0.1 });
+  vids.forEach((v) => vis.observe(v));
 })();
