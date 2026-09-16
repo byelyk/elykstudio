@@ -22,6 +22,7 @@
 const CAMPAIGNS = [
   {
     id: 'back-to-campus',
+    group: 'Sponsorships',
     title: 'Back to Campus',
     client: 'Timberland',
     year: '2026',
@@ -43,6 +44,7 @@ const CAMPAIGNS = [
   },
   {
     id: 'day-in-the-life',
+    group: 'Sponsorships',
     title: 'Day in the Life',
     client: 'Gauth',
     year: '2026',
@@ -64,6 +66,7 @@ const CAMPAIGNS = [
   },
   {
     id: 'on-campus',
+    group: 'Sponsorships',
     title: 'On Campus',
     client: 'Microsoft',
     year: '2026',
@@ -80,6 +83,246 @@ const CAMPAIGNS = [
       { label: 'Instagram',   value: '30K'  },
       { label: 'YouTube',     value: '20K'  },
     ],
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'sleepyhead',
+    group: 'Sponsorships',
+    title: 'The Dorm Essential',
+    client: 'Sleepyhead',
+    year: '2026',
+    role: 'Concept · Short-Form',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'A move-in season campaign positioning Sleepyhead as the upgrade every dorm bed needs.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'scholarshipowl',
+    group: 'Sponsorships',
+    title: 'How I Pay For School',
+    client: 'ScholarshipOwl',
+    year: '2026',
+    role: 'Long-Form · Interviews',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'A YouTube sit-down and campus interviews on how students actually afford college, with ScholarshipOwl as the answer.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'best-buy',
+    group: 'Sponsorships',
+    title: 'The Haul',
+    client: 'Best Buy',
+    year: '2026',
+    role: 'Short-Form · Product',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'A product haul built around the tech students actually buy for the school year.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'venmo',
+    group: 'Sponsorships',
+    title: 'Venmo',
+    client: 'Venmo',
+    year: '2026',
+    role: 'Short-Form',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Campaign details coming soon.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'olipop',
+    group: 'Campaigns &amp; UGC',
+    title: 'Ambassador',
+    client: 'Olipop',
+    year: '2026',
+    role: 'Ambassador · Ongoing',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'An ongoing ambassadorship bringing Olipop into everyday college content.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'bloom-investments',
+    group: 'Campaigns &amp; UGC',
+    title: 'Bloom',
+    client: 'Bloom Investments',
+    year: '2026',
+    role: 'UGC · Finance',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Creator content made for Bloom to own and run across their own channels.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'you-learn',
+    group: 'Campaigns &amp; UGC',
+    title: 'You Learn',
+    client: 'You Learn',
+    year: '2026',
+    role: 'UGC · Education',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'UGC built for an education platform, cut natively for short-form.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'michael-kors',
+    group: 'Campaigns &amp; UGC',
+    title: 'Michael Kors',
+    client: 'Michael Kors',
+    year: '2026',
+    role: 'Fashion · Product',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Campaign details coming soon.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'la-roche-posay',
+    group: 'Campaigns &amp; UGC',
+    title: 'La Roche-Posay',
+    client: 'La Roche-Posay',
+    year: '2026',
+    role: 'Beauty · Product',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Campaign details coming soon.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'razer',
+    group: 'Campaigns &amp; UGC',
+    title: 'Gear Up',
+    client: 'Razer',
+    year: '2026',
+    role: 'Product · Store Event',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'A Razer partnership spanning product content and the RazerStore Student Gear Up Day.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'aelfric-eden',
+    group: 'Campaigns &amp; UGC',
+    title: 'Aelfric Eden',
+    client: 'Aelfric Eden',
+    year: '2026',
+    role: 'Fashion · Product',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Campaign details coming soon.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'tone',
+    group: 'Campaigns &amp; UGC',
+    title: 'Tone',
+    client: 'Tone',
+    year: '2026',
+    role: 'Body Care · Product',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Campaign details coming soon.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'pgytech',
+    group: 'Campaigns &amp; UGC',
+    title: 'PGYTECH',
+    client: 'PGYTECH',
+    year: '2026',
+    role: 'Tech · Product',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Campaign details coming soon.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'when-we-all-vote',
+    group: 'Events',
+    title: 'When We All Vote',
+    client: 'The 50 Million',
+    year: '2026',
+    role: 'Event · Media',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'Invited as media to The 50 Million x When We All Vote event.',
+    results: [],            // ← add { label, value } pairs when you have numbers
+    youtube: [],
+    tiktoks: [],
+  },
+  {
+    id: 'microsoft-campus-tour',
+    group: 'Events',
+    title: 'Campus Tour',
+    client: 'Microsoft',
+    year: '2026',
+    role: 'Event · Media',
+    bgVideo: '',            // ← add a Cloudinary .mp4 URL
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',          // ← same URL works here
+    overview: 'On-the-ground coverage from the Microsoft campus tour.',
+    results: [],            // ← add { label, value } pairs when you have numbers
     youtube: [],
     tiktoks: [],
   },
@@ -170,3 +413,53 @@ const BRAND_GROUPS = [
 const CLIENTS = [...new Map(
   BRAND_GROUPS.flatMap(g => g.brands).map(b => [b.name, { name: b.name }])
 ).values()];
+
+
+/* =============================================
+   CREATORS — powers creators.html
+
+   One object per creator. Everything is optional except
+   name — blank fields simply don't render, so a
+   half-filled profile still looks intentional.
+
+     name    : display name
+     handle  : primary @handle
+     niche   : what they cover ("College life · Comedy")
+     photo   : headshot URL (Cloudinary or assets/…)
+     stats   : [{ label, value }] — platform followers, avg views
+     brands  : ['Timberland', 'Gauth'] — past partners
+     videos  : [url, …] — vertical .mp4s, play inline on the page
+     link    : profile URL (optional, makes the name clickable)
+   ============================================= */
+const CREATORS = [
+  {
+    name: 'Kyle Okoth',
+    handle: '@byelyk',
+    niche: 'College life · Vlogs · Tech',
+    photo: '',
+    stats: [],
+    brands: ['Microsoft', 'Timberland', 'Gauth', 'Adobe'],
+    videos: [],
+    link: '',
+  },
+  {
+    name: 'Eliana Ofori',
+    handle: '',
+    niche: '',
+    photo: '',
+    stats: [],
+    brands: [],
+    videos: [],
+    link: '',
+  },
+  {
+    name: 'Peace Gray',
+    handle: '',
+    niche: '',
+    photo: '',
+    stats: [],
+    brands: [],
+    videos: [],
+    link: '',
+  },
+];

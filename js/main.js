@@ -217,10 +217,20 @@ window.setYT = function(cellSelector, youtubeId, slideIndex = 0) {
     bgMedia.push(media);
   });
 
-  // Build the clickable list
+  // Build the clickable list, grouped by c.group (Sponsorships / Campaigns / Events).
+  // Each group gets a heading; the hover-to-play background still works per item.
+  const groupsSeen = new Set();
   CAMPAIGNS.forEach((c, i) => {
+    const g = c.group || 'Work';
+    if (!groupsSeen.has(g)) {
+      groupsSeen.add(g);
+      const head = document.createElement('div');
+      head.className = 'work-group';
+      head.innerHTML = `<span class="work-group__label">${g}</span>`;
+      indexEl.appendChild(head);
+    }
     const item = document.createElement('a');
-    item.className = 'work-item';
+    item.className = 'work-item' + (c.bgVideo || c.bgYouTube ? '' : ' work-item--noclip');
     item.href = `campaign.html?id=${c.id}`;
     item.dataset.i = i;
     item.innerHTML = `
@@ -509,4 +519,76 @@ function initClientMarquee() {
     });
   }, { threshold: 0.1 });
   vids.forEach((v) => vis.observe(v));
+})();
+
+
+/* =============================================
+   CREATORS PAGE — renders CREATORS into creators.html.
+   Every field is optional: anything blank is skipped so a
+   partially-filled profile still reads as finished.
+   ============================================= */
+(function initCreatorsPage() {
+  const root = document.getElementById('creatorList');
+  if (!root || typeof CREATORS === 'undefined') return;
+
+  const esc = (t) => String(t == null ? '' : t);
+
+  root.innerHTML = CREATORS.map((c) => {
+    const photo = c.photo
+      ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" class="cr-card__img"
+              onerror="this.closest('.cr-card__media').classList.add('is-empty')" />`
+      : '';
+    const name = c.link
+      ? `<a href="${esc(c.link)}" target="_blank" rel="noopener" class="cr-card__name">${esc(c.name)}</a>`
+      : `<span class="cr-card__name">${esc(c.name)}</span>`;
+
+    const stats = (c.stats || []).length ? `
+      <div class="cr-card__stats">
+        ${c.stats.map(s => `
+          <div class="cr-stat">
+            <span class="cr-stat__value">${esc(s.value)}</span>
+            <span class="cr-stat__label">${esc(s.label)}</span>
+          </div>`).join('')}
+      </div>` : '';
+
+    const brands = (c.brands || []).length ? `
+      <div class="cr-card__brands">
+        <span class="cr-card__brands-label">Worked with</span>
+        <div class="cr-card__chips">
+          ${c.brands.map(b => `<span class="cr-chip">${esc(b)}</span>`).join('')}
+        </div>
+      </div>` : '';
+
+    // Vertical clips — lazy, same approach as the home grid
+    const videos = (c.videos || []).length ? `
+      <div class="cr-card__reel">
+        ${c.videos.slice(0, 4).map(v => `
+          <div class="cr-clip">
+            <video class="cr-clip__vid grid-video" muted loop playsinline preload="none"
+                   poster="${esc(v).replace(/\.mp4$/, '.jpg')}"
+                   data-src="${esc(v)}"></video>
+          </div>`).join('')}
+      </div>` : '';
+
+    return `
+      <article class="cr-card fade-up">
+        <div class="cr-card__media">
+          ${photo}
+          <div class="cr-card__ph"><span>Photo</span></div>
+        </div>
+        <div class="cr-card__body">
+          ${name}
+          ${c.handle ? `<span class="cr-card__handle">${esc(c.handle)}</span>` : ''}
+          ${c.niche ? `<p class="cr-card__niche">${esc(c.niche)}</p>` : ''}
+          ${stats}
+          ${brands}
+        </div>
+        ${videos}
+      </article>`;
+  }).join('');
+
+  // mark empty photo slots so the placeholder shows
+  root.querySelectorAll('.cr-card__media').forEach((m) => {
+    if (!m.querySelector('img')) m.classList.add('is-empty');
+  });
 })();
