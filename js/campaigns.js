@@ -295,6 +295,25 @@ const CAMPAIGNS = [
     tiktoks: [],
   },
   {
+    id: 'amazon-storefront',
+    group: 'Campaigns &amp; UGC',
+    title: "What's In My Bag",
+    client: 'Amazon Influencer',
+    year: '2026',
+    role: 'Affiliate · Storefront · Short-Form',
+    bgVideo: '',            // ← add the what's-in-my-bag clip here
+    bgYouTube: '',
+    heroYouTube: '',
+    heroVideo: '',
+    overview: "A curated Amazon storefront paired with short-form content that sends viewers straight to it. The what's-in-my-bag video did 20K views and converted at 8% — roughly three times a typical affiliate benchmark. Proof that the audience doesn't just watch, they buy.",
+    results: [
+      { label: 'Views',      value: '20K' },
+      { label: 'Conversion', value: '8%'  },
+    ],
+    youtube: [],
+    tiktoks: [],
+  },
+  {
     id: 'when-we-all-vote',
     group: 'Events',
     title: 'When We All Vote',
